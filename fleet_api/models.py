@@ -14,9 +14,9 @@ class Aircraft(models.Model):
 class Flight(models.Model):
     departure_airport = models.CharField(max_length=4)
     arrival_airport = models.CharField(max_length=4)
-    departure_time = models.DateTimeField()
-    arrival_time = models.DateTimeField()
-    aircraft = models.ForeignKey(Aircraft, on_delete=models.CASCADE)
+    departure_datetime = models.DateTimeField()
+    arrival_datetime = models.DateTimeField()
+    aircraft = models.ForeignKey(Aircraft, on_delete=models.CASCADE, unique=True)
     
     def __str__(self):
         return f'{self.departure_airport} - {self.arrival_airport}'
