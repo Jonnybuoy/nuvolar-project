@@ -2,6 +2,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from datetime import datetime
+from django.db.models import Q
 from django_filters.rest_framework import DjangoFilterBackend
 from django.utils import timezone
 from .filters import FlightFilter
@@ -47,4 +48,36 @@ class FlightViewSet(viewsets.ModelViewSet):
         # Serialize and return the filtered data
         serializer = self.get_serializer(filtered_queryset, many=True)
         return Response(serializer.data)
+    
+    @action(detail=False, methods=['get'])
+    def departure_airports_report(self, request):
+        filtered_queryset = self.filter_queryset(self.get_queryset())
         
+        start_datetime = self.request.query_params.get('start_datetime', None)
+        end_datetime = self.request.query_params.get('end_datetime', None)
+        
+        if start_datetime and end_datetime:
+            filtered_queryset = filtered_queryset.filter(
+                Q(departure_datetime__range=(start_datetime, end_datetime)) |
+                Q(arrival_datetime__range=(start_datetime, end_datetime)) |
+                Q(departure_datetime__lte=start_datetime, arrival_datetime__gte=end_datetime)
+            )
+        
+        departure_airports = filtered_queryset.values_list('departure_airport', flat=True).distinct()
+        in_flight_aircraft_count = filtered_queryset.values('aircraft').distinct().count()
+        
+        aircraft_in_flight = []
+        now = timezone.now()
+        for flight in filtered_queryset:
+            aircraft_in_flight.append({
+                'aircraft': flight.aircraft.serial_no,
+                'in_flight_time_minutes': int(((now - flight.departure_datetime).total_seconds()) / 60)
+            })
+        
+        response_data = {
+            'departure_airports': departure_airports,
+            'in_flight_aircraft_count': in_flight_aircraft_count,
+            'aircraft_in_flight': aircraft_in_flight
+        }
+        
+        return Response(response_data)
