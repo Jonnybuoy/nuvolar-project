@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, serializers
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from datetime import datetime
@@ -56,6 +56,15 @@ class FlightViewSet(viewsets.ModelViewSet):
         start_datetime = self.request.query_params.get('start_datetime', None)
         end_datetime = self.request.query_params.get('end_datetime', None)
         
+        # Validate datetime values
+        try:
+            if start_datetime:
+                start_datetime = datetime.strptime(start_datetime, '%Y-%m-%d %H:%M:%S')
+            if end_datetime:
+                end_datetime = datetime.strptime(end_datetime, '%Y-%m-%d %H:%M:%S')
+        except ValueError:
+            raise serializers.ValidationError('Invalid datetime format. Use YYYY-MM-DD HH:MM:SS format.')
+
         if start_datetime and end_datetime:
             filtered_queryset = filtered_queryset.filter(
                 Q(departure_datetime__range=(start_datetime, end_datetime)) |
