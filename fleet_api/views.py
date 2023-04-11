@@ -1,10 +1,12 @@
-from rest_framework import viewsets, serializers
+from datetime import datetime
+
+from django.db.models import Q
+from django.utils import timezone
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import serializers, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from datetime import datetime
-from django.db.models import Q
-from django_filters.rest_framework import DjangoFilterBackend
-from django.utils import timezone
+
 from .filters import FlightFilter
 from .models import Aircraft, Flight
 from .serializers import AircraftSerializer, FlightSerializer

@@ -1,12 +1,15 @@
-import pytest
 from datetime import datetime, timedelta
+
+import pytest
 from django.urls import reverse
-from rest_framework import status
 from django.utils import timezone
-from .utils.conftest import api_client
+from rest_framework import status
+
+from fleet_api.filters import FlightFilter
 from fleet_api.models import Aircraft, Flight
 from fleet_api.serializers import FlightSerializer
-from fleet_api.filters import FlightFilter
+
+from .utils.conftest import api_client
 
 pytestmark = pytest.mark.django_db
 
