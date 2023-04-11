@@ -9,6 +9,8 @@ router.register(r'flight', FlightViewSet, basename="flight")
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('flight/search_flights', FlightViewSet.as_view({'get': 'search_flights'})),
-    path('flight/departure_airports_report', FlightViewSet.as_view({'get': 'departure_airports_report'}))
+    path('flight/search_flights', FlightViewSet.as_view(
+        {'get': 'search_flights'})),
+    path('flight/departure_airports_report', FlightViewSet.as_view(
+        {'get': 'departure_airports_report'}))
 ]

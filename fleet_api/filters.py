@@ -10,8 +10,7 @@ class FlightFilter(filters.FilterSet):
         field_name='departure_datetime', lookup_expr='gte')
     departure_datetime_end = filters.DateTimeFilter(
         field_name='departure_datetime', lookup_expr='lte')
-    
-    
+
     class Meta:
         model = Flight
         fields = ['departure_airport', 'arrival_airport',

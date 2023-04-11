@@ -1,7 +1,5 @@
 import pytest
 from django.core.exceptions import ValidationError
-from django.core.validators import MinValueValidator
-from django.db import models
 from django.utils import timezone
 
 from fleet_api.models import Aircraft, Flight
@@ -12,6 +10,7 @@ class TestAircraftModel:
     def test_aircraft_model_str_representation(self):
         aircraft = Aircraft(serial_no='Boe4321', manufacturer='Boeing')
         assert str(aircraft) == 'Boe4321 - Boeing'
+
 
 @pytest.mark.django_db
 class TestFlightModel:

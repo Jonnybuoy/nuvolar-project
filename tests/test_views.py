@@ -16,8 +16,10 @@ pytestmark = pytest.mark.django_db
 
 @pytest.fixture
 def create_aircraft():
-    aircraft = Aircraft.objects.create(serial_no='ABC123', manufacturer='Boeing')
+    aircraft = Aircraft.objects.create(
+        serial_no='ABC123', manufacturer='Boeing')
     return aircraft
+
 
 @pytest.fixture
 def create_flight(create_aircraft):
@@ -31,10 +33,11 @@ def create_flight(create_aircraft):
     )
     return flight
 
+
 def test_search_flights(api_client, create_flight):
     flight = create_flight
     url = reverse('flight-search-flights')
-    
+
     # Test case 1: valid filter parameters are provided
     response = api_client.get(url, data={
         'departure_airport': flight.departure_airport,
@@ -47,12 +50,12 @@ def test_search_flights(api_client, create_flight):
     assert response.status_code == status.HTTP_200_OK
     assert response.json() == serialized_flight
     assert len(response.json()) > 0
-    
+
     # Test case 2: no filter parameters provided
     response = api_client.get(url)
     assert response.status_code == status.HTTP_200_OK
     assert len(response.json()) > 0
-    
+
     # Test case 3: with invalid filter parameters
     response = api_client.get(url, {
         'departure_airport': 'non-existent-airport',
@@ -62,21 +65,25 @@ def test_search_flights(api_client, create_flight):
     })
     assert response.status_code == status.HTTP_400_BAD_REQUEST
 
+
 def test_departure_airports_report(api_client, create_flight):
     flight = create_flight
     url = reverse('flight-departure-airports-report')
-    
+
     # Test case 1: correct data returned when valid filter params are provided
     flight_filter = FlightFilter(data={}, queryset=Flight.objects.all())
     filtered_queryset = flight_filter.qs
-    departure_airports = filtered_queryset.values_list('departure_airport', flat=True).distinct()
-    in_flight_aircraft_count = filtered_queryset.values('aircraft').distinct().count()
+    departure_airports = filtered_queryset.values_list(
+        'departure_airport', flat=True).distinct()
+    in_flight_aircraft_count = filtered_queryset.values(
+        'aircraft').distinct().count()
     aircraft_in_flight = []
     now = timezone.now()
     for flight in filtered_queryset:
         aircraft_in_flight.append({
             'aircraft': flight.aircraft.serial_no,
-            'in_flight_time_minutes': int(((now - flight.departure_datetime).total_seconds()) / 60)
+            'in_flight_time_minutes': int((
+                (now - flight.departure_datetime).total_seconds()) / 60)
         })
 
     response_data = {
@@ -84,7 +91,7 @@ def test_departure_airports_report(api_client, create_flight):
         'in_flight_aircraft_count': in_flight_aircraft_count,
         'aircraft_in_flight': aircraft_in_flight
     }
-    
+
     now = datetime.now()
     start_datetime = now.strftime('%Y-%m-%d %H:%M:%S')
     end_datetime = now + timedelta(days=1)
@@ -92,17 +99,17 @@ def test_departure_airports_report(api_client, create_flight):
         'start_datetime': start_datetime,
         'end_datetime': end_datetime.strftime('%Y-%m-%d %H:%M:%S')
     })
-    
+
     assert response.status_code == status.HTTP_200_OK
     assert response.json() == response_data
-    
+
     # Test case 2: no filter params provided
     response = api_client.get(url)
     assert response.status_code == status.HTTP_200_OK
     assert 'departure_airports' in response.json()
     assert 'in_flight_aircraft_count' in response.json()
     assert 'aircraft_in_flight' in response.json()
-    
+
     # Test case 3: Test with invalid filter parameters
     response = api_client.get(url, {
         'start_datetime': 'invalid-datetime',
