@@ -13,11 +13,20 @@ from .serializers import AircraftSerializer, FlightSerializer
 
 
 class AircraftViewSet(viewsets.ModelViewSet):
+    """
+    Viewset for handling Aircraft model CRUD operations.
+
+    """
     queryset = Aircraft.objects.all()
     serializer_class = AircraftSerializer
 
 
 class FlightViewSet(viewsets.ModelViewSet):
+    """
+    Viewset for handling Flight model CRUD operations,
+    as well as additional actions.
+
+    """
     queryset = Flight.objects.all()
     serializer_class = FlightSerializer
     filter_backends = [DjangoFilterBackend]
@@ -25,6 +34,13 @@ class FlightViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def search_flights(self, request):
+        """
+        Custom action to search flights based on filter parameters.
+
+        Returns:
+            Response: Response object containing serialized flight data.
+
+        """
         # Get the filtered queryset using the filter class
         filtered_queryset = self.filter_queryset(self.get_queryset())
 
@@ -60,6 +76,15 @@ class FlightViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def departure_airports_report(self, request):
+        """
+        Custom action to generate a report of departure airports, in-flight aircraft count,
+        and aircraft in-flight time.
+
+        Returns:
+            Response: Response object containing departure airports, in-flight aircraft count,
+                      and aircraft in-flight time data.
+
+        """
         filtered_queryset = self.filter_queryset(self.get_queryset())
 
         start_datetime = self.request.query_params.get('start_datetime', None)

@@ -4,6 +4,7 @@ from django.utils import timezone
 
 
 class Aircraft(models.Model):
+    """Model to hold the aircraft details."""
     serial_no = models.CharField(max_length=100, unique=True)
     manufacturer = models.CharField(max_length=100)
 
@@ -12,6 +13,7 @@ class Aircraft(models.Model):
 
 
 class Flight(models.Model):
+    """Model to hold flight details."""
     created_at = models.DateTimeField(auto_now_add=True)
     departure_airport = models.CharField(max_length=4)
     arrival_airport = models.CharField(max_length=4)
