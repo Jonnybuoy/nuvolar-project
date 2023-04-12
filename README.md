@@ -41,18 +41,18 @@ This files assume that they are only to be used for development purposes.
 5. Access the Nuvolar Fleet Management application in your web browser at http://localhost:8000 or http://127.0.0.1:8000
 
 ## API Endpoints
-- GET /api/aircraft/: Get a list of all aircrafts.
-- POST /api/aircraft/: Create a new aircraft.
-- PUT /api/aircraft/<aircraft_id>/: Update details of a specific aircraft.
+- `GET /api/aircraft/`: Get a list of all aircrafts.
+- `POST /api/aircraft/`: Create a new aircraft.
+- `PUT /api/aircraft/<aircraft_id>/`: Update details of a specific aircraft.
 
-- GET /api/flight/: Get a list of all flights.
-- POST /api/flight/: Create a new flight.
-- GET /api/flight/<flight_id>/: Get details of a specific flight.
-- PUT /api/flight/<flight_id>/: Update details of a specific flight.
-- DELETE /api/flight/<flight_id>/: Delete a specific flight.
+- `GET /api/flight/`: Get a list of all flights.
+- `POST /api/flight/`: Create a new flight.
+- `GET /api/flight/<flight_id>/`: Get details of a specific flight.
+- `PUT /api/flight/<flight_id>/`: Update details of a specific flight.
+- `DELETE /api/flight/<flight_id>/`: Delete a specific flight.
 
-- GET /flight/search_flights/: Search flights.
-- GET /flight/departure_airports_report/: Retrieve the list of departure airports.
+- `GET /flight/search_flights/`: Search flights.
+- `GET /flight/departure_airports_report/`: Retrieve the list of departure airports.
 
 
 ## Filters
@@ -68,14 +68,76 @@ You can apply these filters in the query parameters of the API endpoints.
 For example:
 
 1. To retrieve the list of departure airports for a giving period of date and time, simply query:
-- GET /flight/departure_airports_report/?start_datetime=2023-04-11 17:10:00&end_datetime=2023-04-12 02:00:00
+- `GET /flight/departure_airports_report/?start_datetime=2023-04-11 17:10:00&end_datetime=2023-04-12 02:00:00`
 
-This will retrieve the list of departure airports and all aircrafts in flight for the period between 2023-04-11 at 17:10 and 2023-04-12 at 02:00
+This will retrieve the list of departure airports and all aircrafts in flight for the period between 2023-04-11 at 17:10 and 2023-04-12 at 02:00. Sample json:
+```json
+{
+    "departure_airports": [
+        "HK",
+        "LE",
+        "LN"
+    ],
+    "in_flight_aircraft_count": 7,
+    "aircraft_in_flight": [
+        {
+            "aircraft": "boe-300",
+            "in_flight_time_minutes": 126
+        },
+        {
+            "aircraft": "bom-123",
+            "in_flight_time_minutes": 106
+        },
+        {
+            "aircraft": "air-400",
+            "in_flight_time_minutes": 23
+        },
+        {
+            "aircraft": "boe-901",
+            "in_flight_time_minutes": 151
+        },
+        {
+            "aircraft": "boe-221",
+            "in_flight_time_minutes": 276
+        },
+        {
+            "aircraft": "boe-225",
+            "in_flight_time_minutes": 6
+        },
+        {
+            "aircraft": "air-225",
+            "in_flight_time_minutes": 1
+        }
+    ]
+}
+```
 
 2. To search for flights by departure and arrival airport and also by a departure date and time range, simply query:
-- GET /flight/search_flights/?departure_airport=<airport_ICAO_CODE> OR
-- GET /flight/search_flights/?arrival_airport=<airport_ICAO_CODE> OR
-- GET /flight/search_flights/?departure_datetime_start=<datetime_start_range>&departure_datetime_end=<datetime_end_range>
+- `GET /flight/search_flights/?departure_airport=<airport_ICAO_CODE>` OR
+- `GET /flight/search_flights/?arrival_airport=<airport_ICAO_CODE>` OR
+- `GET /flight/search_flights/?departure_datetime_start=<datetime_start_range>&departure_datetime_end=<datetime_end_range>`
+
+Sample json response:
+```json
+[
+    {
+        "id": 6,
+        "departure_airport": "LS",
+        "arrival_airport": "MU",
+        "departure_datetime": "2023-04-11T00:05:00Z",
+        "arrival_datetime": "2023-04-11T12:00:00Z",
+        "aircraft": 3
+    },
+    {
+        "id": 7,
+        "departure_airport": "LS",
+        "arrival_airport": "LT",
+        "departure_datetime": "2023-04-11T04:05:00Z",
+        "arrival_datetime": "2023-04-11T13:00:00Z",
+        "aircraft": 4
+    }
+]
+```
 
 
 ## Testing
