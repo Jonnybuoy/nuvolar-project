@@ -54,15 +54,15 @@ This files assume that they are only to be used for development purposes.
 6. Access the Nuvolar Fleet Management application in your web browser at http://localhost:8000 or http://127.0.0.1:8000
 
 ## API Endpoints
-- `GET /api/aircraft/`: Get a list of all aircrafts.
-- `POST /api/aircraft/`: Create a new aircraft.
-- `PUT /api/aircraft/<aircraft_id>/`: Update details of a specific aircraft.
+- `GET /aircraft/`: Get a list of all aircrafts.
+- `POST /aircraft/`: Create a new aircraft.
+- `PUT /aircraft/<aircraft_id>/`: Update details of a specific aircraft.
 
-- `GET /api/flight/`: Get a list of all flights.
-- `POST /api/flight/`: Create a new flight.
-- `GET /api/flight/<flight_id>/`: Get details of a specific flight.
-- `PUT /api/flight/<flight_id>/`: Update details of a specific flight.
-- `DELETE /api/flight/<flight_id>/`: Delete a specific flight.
+- `GET /flight/`: Get a list of all flights.
+- `POST /flight/`: Create a new flight.
+- `GET /flight/<flight_id>/`: Get details of a specific flight.
+- `PUT /flight/<flight_id>/`: Update details of a specific flight.
+- `DELETE /flight/<flight_id>/`: Delete a specific flight.
 
 - `GET /flight/search_flights/`: Search flights.
 - `GET /flight/departure_airports_report/`: Retrieve the list of departure airports.
