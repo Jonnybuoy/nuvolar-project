@@ -31,14 +31,27 @@ $ cd nuvolar-project
 
 3. Ensure you have installed docker on your machine. You can install using the steps outlined [here](https://www.docker.com/get-started)
 
-4. Since you've already cloned the repository, you have access to the Dockerfile and dockor_compose.yml file so simply run the following commands:
+4. Create an env file(.env.dev) and populate it with the following variables:
+```text
+SQL_DATABASE=<name_of_your_database>
+SQL_USER=<name_of_your_user>
+SQL_PASSWORD=<user_access_password>
+SQL_HOST=db
+SQL_PORT=5432
+```
+
+5. Since you've already cloned the repository, you have access to the Dockerfile and dockor_compose.yml file so simply run the following commands:
 ```bash
 $ docker compose up -d --build
 $ docker compose up
 ```
+You can inspect your database tables by running the command:
+```bash
+$ docker compose exec db psql --username=<SQL_USER> --dbname=<SQL_DATABASE>
+```
 This files assume that they are only to be used for development purposes.
 
-5. Access the Nuvolar Fleet Management application in your web browser at http://localhost:8000 or http://127.0.0.1:8000
+6. Access the Nuvolar Fleet Management application in your web browser at http://localhost:8000 or http://127.0.0.1:8000
 
 ## API Endpoints
 - `GET /api/aircraft/`: Get a list of all aircrafts.

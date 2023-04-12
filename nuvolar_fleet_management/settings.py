@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -82,11 +83,11 @@ WSGI_APPLICATION = 'nuvolar_fleet_management.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'fleet_management',
-        'USER': 'api_user',
-        'PASSWORD': 'apipassword',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'NAME': os.environ.get("SQL_DATABASE", BASE_DIR / "db.sqlite3"),
+        'USER': os.environ.get("SQL_USER", "user"),
+        'PASSWORD': os.environ.get("SQL_PASSWORD", "password"),
+        'HOST': os.environ.get("SQL_HOST", "localhost"),
+        'PORT': os.environ.get("SQL_PORT", "5432"),
     }
 }
 
