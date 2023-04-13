@@ -1,6 +1,6 @@
 # Nuvolar Fleet Management
 
-Nuvolar Fleet Management is a web api application built on Django Rest Framework that allows users to track flights, view flight details, and apply filters to search for flights based on various criteria.
+Nuvolar Fleet Management is a web application api built on Django Rest Framework that allows users to track flights, view flight details, and apply filters to search for flights based on various criteria.
 
 ## Features
 
