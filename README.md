@@ -11,7 +11,7 @@ Nuvolar Fleet Management is a web application api built on Django Rest Framework
 - API endpoints for CRUD (Create, Read, Update, Delete) operations on flights.
 
 ## Prerequisites
-- Python 3.8 or higher
+- Python 3.6 or higher
 - Django 3.2 or higher
 - Django Rest Framework 3.12 or higher
 - django-filters 3.0 or higher
